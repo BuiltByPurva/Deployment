@@ -17,7 +17,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t spring-app:latest .'
+                    bat 'docker build -t spring-app:latest .'
                 }
             }
         }
@@ -25,8 +25,8 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 script {
-                    sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
-                    sh "docker push spring-app:latest"
+                    bat "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
+                    bat "docker push spring-app:latest"
                 }
             }
         }
@@ -34,7 +34,7 @@ pipeline {
         stage('Deploy Container') {
             steps {
                 script {
-                    sh "docker run -d -p 3000:3000 --name microservice spring-app:latest"
+                    bat "docker run -d -p 3000:3000 --name microservice spring-app:latest"
                 }
             }
         }
@@ -42,7 +42,7 @@ pipeline {
 
     post {
         always {
-            echo 'Pipeline finished!'
+            bat 'Pipeline finished!'
         }
     }
 }
