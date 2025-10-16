@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials-id')
-        IMAGE_NAME = "purvakamerkarjj5499079/spring-app:latest"
+        IMAGE_NAME = "spring-app:latest"
     }
 
     stages {
@@ -14,6 +14,12 @@ pipeline {
             }
         }
 
+        stage('Build with Maven') {
+                    steps {
+                        bat 'mvn clean package -DskipTests'
+                    }
+                }
+
         stage('Build Docker Image') {
             steps {
                 script {
@@ -23,20 +29,26 @@ pipeline {
         }
 
         stage('Push to Docker Hub') {
-            steps {
-                script {
-                    bat "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
-                    bat "docker push spring-app:latest"
+                    steps {
+                        script {
+                            withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id',
+                                usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                                bat """
+                                echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
+                                docker tag spring-app:latest your-dockerhub-username/spring-app:latest
+                                docker push your-dockerhub-username/spring-app:latest
+                                """
+                            }
+                        }
+                    }
                 }
-            }
-        }
 
         stage('Deploy Container') {
-            steps {
-                script {
-                    bat "docker run -d -p 3000:3000 --name microservice spring-app:latest"
-                }
-            }
+             steps {
+                   script {
+                            bat "docker run -d -p 8080:8080 spring-app:latest"
+                   }
+             }
         }
     }
 
