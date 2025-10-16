@@ -15,9 +15,11 @@ pipeline {
         }
 
         stage('Build with Maven') {
-                    withMaven(maven: 'M3') {
-                        bat 'mvn clean package -DskipTests'
-                    }
+                    steps {
+                              withMaven(maven: 'M3') {
+                                        bat 'mvn clean package -DskipTests'
+                                    }
+                                }
                 }
 
         stage('Build Docker Image') {
