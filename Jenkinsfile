@@ -15,12 +15,10 @@ pipeline {
         }
 
         stage('Build with Maven') {
-                    steps {
-                              withMaven(maven: 'M3') {
-                                        bat 'mvn clean package -DskipTests'
-                                    }
-                                }
-                }
+            steps {
+                bat 'mvn clean package -DskipTests'
+            }
+        }
 
         stage('Build Docker Image') {
             steps {
@@ -56,7 +54,7 @@ pipeline {
 
     post {
         always {
-            bat 'Pipeline finished!'
+            echo 'Pipeline finished!'
         }
     }
 }
