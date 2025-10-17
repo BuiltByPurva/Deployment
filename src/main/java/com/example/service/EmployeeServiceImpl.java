@@ -4,9 +4,7 @@ import com.example.entity.Employee;
 import com.example.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService{
@@ -21,8 +19,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Override
     public Employee getEmployeeById(Long id) {
-        Optional<Employee> optional=employeeRepository.findById(Math.toIntExact(id));
-        return optional.orElse(null);
+        return employeeRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -37,7 +34,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Override
     public void deleteEmployee(Long id) {
-        employeeRepository.deleteById(Math.toIntExact(id));
+        employeeRepository.deleteById(id);
     }
 
 

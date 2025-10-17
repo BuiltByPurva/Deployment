@@ -1,12 +1,12 @@
 pipeline {
     agent any
+
     tools {
         maven 'M3'
     }
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials-id')
-        IMAGE_NAME = "spring-app:latest"
+        IMAGE_NAME = "purvakamerkarjj5499079/spring-app:latest"
     }
 
     stages {
@@ -25,39 +25,35 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    bat 'docker build -t spring-app:latest .'
-                }
+                bat "docker build -t ${IMAGE_NAME} ."
             }
         }
 
         stage('Push to Docker Hub') {
-                    steps {
-                        script {
-                            withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id',
-                                usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                                bat """
-                                echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
-                                docker tag spring-app:latest  purvakamerkarjj5499079/spring-app:latest
-                                docker push  purvakamerkarjj5499079/spring-app:latest
-                                """
-                            }
-                        }
-                    }
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id',
+                    usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    bat """
+                    echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
+                    docker push ${IMAGE_NAME}
+                    """
                 }
+            }
+        }
 
-        stage('Deploy Container') {
-             steps {
-                   script {
-                            bat "docker run -d -p 9090:8080 spring-app:latest"
-                   }
-             }
+        stage('Run Container (Optional)') {
+            when {
+                expression { false } // DISABLED to prevent port conflicts
+            }
+            steps {
+                bat "docker run -d -p 9090:8000 ${IMAGE_NAME}"
+            }
         }
     }
 
     post {
         always {
-            echo 'Pipeline finished!'
+            echo '✅ Pipeline finished successfully!'
         }
     }
 }

@@ -6,22 +6,22 @@ import jakarta.persistence.Id;
 @Entity
 public class Employee {
     @Id
-    private int id;
+    private Long id;
 
     private String name;
     public Employee(){
     }
 
-    public Employee(int id, String name) {
+    public Employee(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

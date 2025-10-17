@@ -15,15 +15,12 @@ spec:
       containers:
         - name: spring-app
           image: purvakamerkarjj5499079/spring-app:latest
-          #image: my-spring-app:latest # Update if using kind Local Image
-          # imagePullPolicy: Never   # if you are using kind local image
-
+          ports:
+            - containerPort: 8000
           env:
             - name: SPRING_DATASOURCE_URL
-              value: "jdbc:mysql://mysql-service:3306/test"
+              value: jdbc:mysql://mysql-service:3306/employee_db
             - name: SPRING_DATASOURCE_USERNAME
-              value: "root"
+              value: root
             - name: SPRING_DATASOURCE_PASSWORD
-              value: "root"
-          ports:
-            - containerPort: 8080
+              value: root
