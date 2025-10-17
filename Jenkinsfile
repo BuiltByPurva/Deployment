@@ -38,8 +38,8 @@ pipeline {
                                 usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                                 bat """
                                 echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
-                                docker tag spring-app:latest your-dockerhub-username/spring-app:latest
-                                docker push your-dockerhub-username/spring-app:latest
+                                docker tag spring-app:latest  purvakamerkarjj5499079/spring-app:latest
+                                docker push  purvakamerkarjj5499079/spring-app:latest
                                 """
                             }
                         }
