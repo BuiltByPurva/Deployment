@@ -35,7 +35,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Deploy (optional)
-        run: |
-          # Example: Deploy to Kubernetes
-          kubectl apply -f k8s/spring-app-deployment.yaml
+#      - name: Deploy (optional)
+#        run: |
+#          # Example: Deploy to Kubernetes
+#          kubectl apply -f k8s/spring-app-deployment.yaml
