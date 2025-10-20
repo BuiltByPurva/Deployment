@@ -19,7 +19,7 @@ spec:
             - containerPort: 8000
           env:
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:mysql://mysql-service:3306/employee_db
+              value: jdbc:mysql://mysql-service:3306/test
             - name: SPRING_DATASOURCE_USERNAME
               value: root
             - name: SPRING_DATASOURCE_PASSWORD
